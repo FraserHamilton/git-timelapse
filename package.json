@@ -1,14 +1,16 @@
 {
-  "name": "time",
+  "name": "git-timelapse",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Fraser Hamilton",
   "license": "ISC",
   "dependencies": {
+    "gifencoder": "^2.0.1",
+    "png-file-stream": "^1.2.1",
     "puppeteer": "^2.0.0",
     "simple-git": "^1.129.0"
   }
