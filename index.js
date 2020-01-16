@@ -31,7 +31,9 @@ const run = async (gitPath, pagePath) => {
   let delay = 500;
   let repeat = -1;
   let outputFilename = "timelapse";
-  let skip = 0;
+  let skip = 1;
+  let startHash = null;
+  let endHash = null;
 
   if (fs.existsSync(gitPath + "\\timelapseConfig.js")) {
     const config = require(gitPath + "\\timelapseConfig.js");
@@ -39,6 +41,8 @@ const run = async (gitPath, pagePath) => {
     repeat = config.repeat || repeat;
     outputFilename = config.outputFilename || outputFilename;
     skip = config.skip || skip;
+    startHash = config.start || null;
+    endHash = config.end || null;
   }
 
   await page.setViewport({
@@ -47,19 +51,31 @@ const run = async (gitPath, pagePath) => {
   });
 
   const logObj = await simpleGitPromise.log();
-  const logs = logObj.all;
+  let logs = logObj.all;
+
+  if (startHash) {
+    var startIndex = logs.findIndex(l => l.hash === startHash);
+    logs = logs.slice(0, startIndex);
+  }
+
+  if (endHash) {
+    var endIndex = logs.findIndex(l => l.hash === endHash);
+    logs = logs.slice(endIndex, logs.length);
+  }
 
   if (!fs.existsSync(tmp)) {
     fs.mkdirSync(tmp);
   }
 
   for (let [i, log] of logs.entries()) {
-    await simpleGitPromise.checkout(log.hash);
-    await page.goto(pageToCapture);
-    await page.screenshot({
-      path: `tmp/capture${logs.length - i}.png`,
-      fullPage: true
-    });
+    if (i % skip === 0) {
+      await simpleGitPromise.checkout(log.hash);
+      await page.goto(pageToCapture);
+      await page.screenshot({
+        path: `tmp/capture${logs.length - i}.png`,
+        fullPage: true
+      });
+    }
   }
 
   await simpleGitPromise.checkout("master");
