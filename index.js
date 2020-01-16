@@ -42,13 +42,11 @@ const run = async (gitPath, pagePath) => {
 
   for (let [i, log] of logs.entries()) {
     await simpleGitPromise.checkout(log.hash);
-    if (fs.existsSync(pageToCapture)) {
-      await page.goto(pageToCapture);
-      await page.screenshot({
-        path: `tmp/capture${logs.length - i}.png`,
-        fullPage: true
-      });
-    }
+    await page.goto(pageToCapture);
+    await page.screenshot({
+      path: `tmp/capture${logs.length - i}.png`,
+      fullPage: true
+    });
   }
 
   await simpleGitPromise.checkout("master");
