@@ -1,15 +1,8 @@
-const workingDirPath = "C:/Projects/FraserHamilton.github.io";
-const simpleGitPromise = require("simple-git/promise")(workingDirPath);
 const puppeteer = require("puppeteer");
 const fs = require("fs");
 const GIFEncoder = require("gifencoder");
 const pngFileStream = require("png-file-stream");
-var dir = "./tmp";
-
-const getLog = async () => {
-  const logObj = await simpleGitPromise.log();
-  return logObj.all;
-};
+const tmp = "./tmp";
 
 const deleteFolderRecursive = path => {
   var files = [];
@@ -29,7 +22,12 @@ const deleteFolderRecursive = path => {
   }
 };
 
-const run = async () => {
+const run = async (gitPath, pagePath) => {
+  const simpleGitPromise = gitPath
+    ? require("simple-git/promise")(gitPath)
+    : require("simple-git/promise")();
+  const pageToCapture = pagePath || "./index.html";
+
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -38,16 +36,17 @@ const run = async () => {
     height: 800
   });
 
-  const logs = await getLog();
+  const logObj = await simpleGitPromise.log();
+  const logs = logObj.all;
 
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+  if (!fs.existsSync(tmp)) {
+    fs.mkdirSync(tmp);
   }
 
   for (let [i, log] of logs.entries()) {
     await simpleGitPromise.checkout(log.hash);
-    if (fs.existsSync("C:/Projects/FraserHamilton.github.io/index.html")) {
-      await page.goto("C:/Projects/FraserHamilton.github.io/index.html");
+    if (fs.existsSync(pagePath)) {
+      await page.goto(pagePath);
       await page.screenshot({
         path: `tmp/capture${logs.length - i}.png`,
         fullPage: true
@@ -62,12 +61,18 @@ const run = async () => {
   const encoder = new GIFEncoder(1280, 800);
 
   const stream = pngFileStream("tmp/capture??.png")
-    .pipe(encoder.createWriteStream({ repeat: -1, delay: 500, quality: 10 }))
-    .pipe(fs.createWriteStream("myanimated.gif"));
+    .pipe(
+      encoder.createWriteStream({
+        repeat: -1,
+        delay: 500,
+        quality: 10
+      })
+    )
+    .pipe(fs.createWriteStream("timelapse.gif"));
 
   stream.on("finish", function() {
-    deleteFolderRecursive(dir);
+    deleteFolderRecursive(tmp);
   });
 };
 
-run();
+module.exports = run;
