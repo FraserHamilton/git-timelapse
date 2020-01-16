@@ -38,7 +38,7 @@ const run = async (gitPath, pagePath) => {
   if (fs.existsSync(gitPath + "\\timelapseConfig.js")) {
     const config = require(gitPath + "\\timelapseConfig.js");
     delay = config.delay || delay;
-    repeat = config.repeat || repeat;
+    repeat = config.repeat === 1 ? 0 : repeat;
     outputFilename = config.outputFilename || outputFilename;
     skip = config.skip || skip;
     startHash = config.start || null;
