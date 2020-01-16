@@ -45,6 +45,8 @@ const run = async (gitPath, pagePath) => {
     endHash = config.end || null;
   }
 
+  const isFile = pageToCapture.includes(".html");
+
   await page.setViewport({
     width: 1280,
     height: 800
@@ -70,6 +72,11 @@ const run = async (gitPath, pagePath) => {
   for (let [i, log] of logs.entries()) {
     if (i % skip === 0) {
       await simpleGitPromise.checkout(log.hash);
+      if (isFile) {
+        if (!fs.existsSync(pageToCapture)) {
+          break;
+        }
+      }
       await page.goto(pageToCapture);
       await page.screenshot({
         path: `tmp/capture${logs.length - i}.png`,
