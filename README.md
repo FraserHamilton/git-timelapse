@@ -1,4 +1,4 @@
-# git-timelapse
+# git-timelapse ![npm](https://img.shields.io/npm/v/git-timelapse)
 
 
 ## What's git-timelapse?
