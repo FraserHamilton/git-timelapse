@@ -28,6 +28,19 @@ const run = async (gitPath, pagePath) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
+  let delay = 500;
+  let repeat = -1;
+  let outputFilename = "timelapse";
+  let skip = 0;
+
+  if (fs.existsSync(gitPath + "\\timelapseConfig.js")) {
+    const config = require(gitPath + "\\timelapseConfig.js");
+    delay = config.delay || delay;
+    repeat = config.repeat || repeat;
+    outputFilename = config.outputFilename || outputFilename;
+    skip = config.skip || skip;
+  }
+
   await page.setViewport({
     width: 1280,
     height: 800
@@ -58,12 +71,12 @@ const run = async (gitPath, pagePath) => {
   const stream = pngFileStream("tmp/capture*.png")
     .pipe(
       encoder.createWriteStream({
-        repeat: -1,
-        delay: 500,
+        repeat: repeat,
+        delay: delay,
         quality: 10
       })
     )
-    .pipe(fs.createWriteStream("timelapse.gif"));
+    .pipe(fs.createWriteStream(outputFilename + ".gif"));
 
   stream.on("finish", function() {
     deleteFolderRecursive(tmp);
