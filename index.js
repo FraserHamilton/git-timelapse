@@ -26,8 +26,7 @@ const run = async (gitPath, pagePath) => {
   const simpleGitPromise = gitPath
     ? require("simple-git/promise")(gitPath)
     : require("simple-git/promise")();
-  const pageToCapture = pagePath || "./index.html";
-
+  const pageToCapture = pagePath || __dirname + "/index.html";
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -45,8 +44,8 @@ const run = async (gitPath, pagePath) => {
 
   for (let [i, log] of logs.entries()) {
     await simpleGitPromise.checkout(log.hash);
-    if (fs.existsSync(pagePath)) {
-      await page.goto(pagePath);
+    if (fs.existsSync(pageToCapture)) {
+      await page.goto(pageToCapture);
       await page.screenshot({
         path: `tmp/capture${logs.length - i}.png`,
         fullPage: true
@@ -60,7 +59,7 @@ const run = async (gitPath, pagePath) => {
 
   const encoder = new GIFEncoder(1280, 800);
 
-  const stream = pngFileStream("tmp/capture??.png")
+  const stream = pngFileStream("tmp/capture*.png")
     .pipe(
       encoder.createWriteStream({
         repeat: -1,
