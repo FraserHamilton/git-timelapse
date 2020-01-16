@@ -5,7 +5,9 @@
 
 git-timelapse is an npm package that constructs timelapses of how pages in your project have evolved over time.
 
-![](name-of-giphy.gif)
+The following gif illustrates a very simple example and is looping although this is not the default for the package.
+
+![](basic_looping.gif)
 
 Currently git-timelapse only works for basic web pages or simple react apps. I intend to expand it further to offer some sort of support for more complex applications but there's some issues I'd need to address such as changes to the projects back-end or database schema.
 
