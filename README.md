@@ -33,9 +33,17 @@ You can achieve further configuration by creating a `timelapseConfig.js` file wi
 module.exports = {
   #The delay between the slides in the generated gif in ms
   delay: 500,
+  
   #Only include every 3rd commit in the timelapse
   skip: 3,
+  
   #The name of the output file (It will still end with .git)
-  outputFilename: "test"
+  outputFilename: "test",
+  
+  #The full hash of the earliest commit you want to include
+  start: "0a79a4440e29aaa84e5cf7075a6eb1025b615261",
+  
+  #The full hash of the latest commit you want to include
+  end: "fde000b6da818b47a6d2a8ccff0478a52a6492ab"
 };
 ```
