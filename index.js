@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs");
-const GIFEncoder = require("gifencoder");
 const pngFileStream = require("png-file-stream");
+const GIFEncoder = require("gifencoder");
 const tmp = "./tmp";
 
 const deleteFolderRecursive = path => {
