@@ -31,7 +31,7 @@ You can achieve further configuration by creating a `timelapseConfig.js` file wi
 
 ```sh
 module.exports = {
-  //The delay between the slides in the generated gif in ms
+  #The delay between the slides in the generated gif in ms
   delay: 500,
   
   #Only include every 3rd commit in the timelapse
