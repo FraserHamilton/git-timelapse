@@ -23,10 +23,8 @@ const deleteFolderRecursive = path => {
 };
 
 const run = async (gitPath, pagePath) => {
-  const simpleGitPromise = gitPath
-    ? require("simple-git/promise")(gitPath)
-    : require("simple-git/promise")();
-  const pageToCapture = pagePath || __dirname + "/index.html";
+  const simpleGitPromise = require("simple-git/promise")(gitPath);
+  const pageToCapture = pagePath || gitPath + "\\index.html";
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
