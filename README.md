@@ -22,3 +22,20 @@ npx git-timelapse -g ./full/path/to/git/repo -p ./full/path/to/page
 
 - `-g /path/to/git/repo` - Full Path to folder for the git repo.
 - `-p /path/to/page` - Full Path To The Page Or URL i.e https://localhost:3000
+
+
+
+## Further Configuration
+
+You can achieve further configuration by creating a `timelapseConfig.js` file with the following structure
+
+```sh
+module.exports = {
+  #The delay between the slides in the generated gif in ms
+  delay: 500,
+  #Only include every 3rd commit in the timelapse
+  skip: 3,
+  #The name of the output file (It will still end with .git)
+  outputFilename: "test"
+};
+```
