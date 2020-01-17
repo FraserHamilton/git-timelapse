@@ -34,6 +34,8 @@ const run = async (gitPath, pagePath) => {
   let skip = 1;
   let startHash = null;
   let endHash = null;
+  let width = 1280;
+  let height = 800;
 
   if (fs.existsSync(gitPath + "\\timelapseConfig.js")) {
     const config = require(gitPath + "\\timelapseConfig.js");
@@ -43,13 +45,15 @@ const run = async (gitPath, pagePath) => {
     skip = config.skip || skip;
     startHash = config.start || null;
     endHash = config.end || null;
+    width = config.width || width;
+    heigth = config.heigth || height;
   }
 
   const isFile = pageToCapture.includes(".html");
 
   await page.setViewport({
-    width: 1280,
-    height: 800
+    width: width,
+    height: height
   });
 
   const logObj = await simpleGitPromise.log();
@@ -89,7 +93,7 @@ const run = async (gitPath, pagePath) => {
 
   await browser.close();
 
-  const encoder = new GIFEncoder(1280, 800);
+  const encoder = new GIFEncoder(width, height);
 
   const stream = pngFileStream("tmp/capture*.png")
     .pipe(
