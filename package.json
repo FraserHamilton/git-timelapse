@@ -1,6 +1,6 @@
 {
   "name": "git-timelapse",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -20,5 +20,13 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/FraserHamilton/git-timelapse.git"
-  }
+  },
+  "keywords": [
+    "git",
+    "timelapse",
+    "time-lapse",
+    "design",
+    "progression",
+    "development"
+  ]
 }
