@@ -2,6 +2,7 @@ const puppeteer = require("puppeteer");
 const fs = require("fs");
 const pngFileStream = require("png-file-stream");
 const GIFEncoder = require("gifencoder");
+var looksSame = require("looks-same");
 const tmp = "./tmp";
 
 const deleteFolderRecursive = path => {
@@ -36,6 +37,7 @@ const run = async (gitPath, pagePath) => {
   let endHash = null;
   let width = 1280;
   let height = 800;
+  let ditchSimiliar = false;
 
   if (fs.existsSync(gitPath + "\\timelapseConfig.js")) {
     const config = require(gitPath + "\\timelapseConfig.js");
@@ -47,6 +49,7 @@ const run = async (gitPath, pagePath) => {
     endHash = config.end || null;
     width = config.width || width;
     heigth = config.heigth || height;
+    ditchSimiliar = config.ditchSimiliar || ditchSimiliar;
   }
 
   const isFile = pageToCapture.includes(".html");
@@ -73,6 +76,9 @@ const run = async (gitPath, pagePath) => {
     fs.mkdirSync(tmp);
   }
 
+  let previousImg = null;
+  let confirmedCount = 0;
+
   for (let [i, log] of logs.entries()) {
     if (i % skip === 0) {
       await simpleGitPromise.checkout(log.hash);
@@ -81,13 +87,52 @@ const run = async (gitPath, pagePath) => {
           break;
         }
       }
+
+      const newImg = `tmp/capture${logs.length - i}.png`;
       await page.goto(pageToCapture);
       await page.screenshot({
-        path: `tmp/capture${logs.length - i}.png`,
+        path: newImg,
         fullPage: true
       });
+
+      if (ditchSimiliar) {
+        if (previousImg !== null) {
+          looksSame(previousImg, newImg, { tolerance: 3 }, function(
+            error,
+            { equal }
+          ) {
+            if (!equal) {
+              fs.rename(
+                newImg,
+                `tmp/confirmed${logs.length - confirmedCount}.png`,
+                function(err) {
+                  if (err) throw err;
+                  previousImg = `tmp/confirmed${logs.length -
+                    confirmedCount}.png`;
+                  confirmedCount++;
+                }
+              );
+            }
+            previousImg = newImg;
+          });
+        }
+
+        if (previousImg === null) {
+          fs.rename(
+            newImg,
+            `tmp/confirmed${logs.length - confirmedCount}.png`,
+            function(err) {
+              if (err) throw err;
+              previousImg = `tmp/confirmed${logs.length - confirmedCount}.png`;
+              confirmedCount++;
+            }
+          );
+        }
+      }
     }
   }
+
+  console.log(confirmedCount);
 
   await simpleGitPromise.checkout("master");
 
@@ -95,7 +140,9 @@ const run = async (gitPath, pagePath) => {
 
   const encoder = new GIFEncoder(width, height);
 
-  const stream = pngFileStream("tmp/capture*.png")
+  const stream = pngFileStream(
+    ditchSimiliar ? "tmp/confirmed*.png" : "tmp/capture*.png"
+  )
     .pipe(
       encoder.createWriteStream({
         repeat: repeat,
