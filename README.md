@@ -29,7 +29,7 @@ npx git-timelapse -g ./full/path/to/git/repo -p ./full/path/to/page
 
 You can achieve further configuration by creating a `timelapseConfig.js` file with the following structure
 
-````sh
+```sh
 module.exports = {
   #The delay between the slides in the generated gif in ms
   delay: 500,
@@ -54,6 +54,7 @@ module.exports = {
 
 };
 
+```
 
 ## Projects with a build process
 
@@ -68,7 +69,7 @@ npm start
 
 # In a sepearte terminal run git-timelapse (url example for create-react-app: http://localhost:3000)
 npx git-timelapse -g ./full/path/to/git/repo -p url/to/page
-````
+```
 
 ```
 
