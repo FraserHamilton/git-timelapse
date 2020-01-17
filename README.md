@@ -70,7 +70,3 @@ npm start
 # In a sepearte terminal run git-timelapse (url example for create-react-app: http://localhost:3000)
 npx git-timelapse -g ./full/path/to/git/repo -p url/to/page
 ```
-
-```
-
-```
