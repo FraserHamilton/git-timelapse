@@ -1,6 +1,6 @@
 {
   "name": "git-timelapse",
-  "version": "2.0.2",
+  "version": "2.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -16,5 +16,9 @@
     "puppeteer": "^2.0.0",
     "simple-git": "^1.129.0"
   },
-  "bin": "cli.js"
+  "bin": "cli.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FraserHamilton/git-timelapse.git"
+  }
 }
