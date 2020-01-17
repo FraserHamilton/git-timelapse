@@ -64,7 +64,7 @@ This is an example of how you would use this package with something like create-
 # install git-timelapse
 npm i git-timelapse
 
-# use npm start to launch your application so it's listening to changes
+# use npm start or whatever command you use to have your application listen to changes in your code
 npm start
 
 # In a sepearte terminal run git-timelapse (url example for create-react-app: http://localhost:3000)
