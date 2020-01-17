@@ -29,7 +29,7 @@ npx git-timelapse -g ./full/path/to/git/repo -p ./full/path/to/page
 
 You can achieve further configuration by creating a `timelapseConfig.js` file with the following structure
 
-```sh
+````sh
 module.exports = {
   #The delay between the slides in the generated gif in ms
   delay: 500,
@@ -44,6 +44,32 @@ module.exports = {
   start: "0a79a4440e29aaa84e5cf7075a6eb1025b615261",
 
   #The full hash of the latest commit you want to include
-  end: "fde000b6da818b47a6d2a8ccff0478a52a6492ab"
+  end: "fde000b6da818b47a6d2a8ccff0478a52a6492ab",
+
+  #The width of the viewport when the screenshot is taken and width of the gif
+  width: 1280,
+
+  #The height of the viewport when the screenshot is taken and height of the gif
+  height: 800
+
 };
+
+
+## Projects with a build process
+
+This is an example of how you would use this package with something like create-react-app
+
+```sh
+# install git-timelapse
+npm i git-timelapse
+
+# use npm start to launch your application so it's listening to changes
+npm start
+
+# In a sepearte terminal run git-timelapse (url example for create-react-app: http://localhost:3000)
+npx git-timelapse -g ./full/path/to/git/repo -p url/to/page
+````
+
+```
+
 ```
