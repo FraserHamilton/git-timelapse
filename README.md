@@ -10,6 +10,8 @@ The following gif illustrates a very simple example and is looping although this
 
 Currently git-timelapse only works for basic web pages or simple react apps. I intend to expand it further to offer some sort of support for more complex applications but there's some issues I'd need to address such as changes to the projects back-end or database schema.
 
+Also coming soon will be the ability to ditch commits that look similiar and are succesive.
+
 ## Usage
 
 ```sh
