@@ -15,7 +15,7 @@
     "minimist": "^1.2.0",
     "png-file-stream": "^1.2.1",
     "puppeteer": "^2.0.0",
-    "simple-git": "^1.129.0"
+    "simple-git": "^3.5.0"
   },
   "bin": "cli.js",
   "repository": {
